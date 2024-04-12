@@ -13,19 +13,27 @@ const posts = [
   },
 ];
 
-const getPosts = (req, res) => {
-  res.status(200).json({ posts });
+const getPosts = (req, res, next) => {
+  try {
+    res.status(200).json({ posts });
+  } catch (err) {
+    next(err);
+  }
 };
 
-const createPost = (req, res) => {
-  const { title, content } = req.body;
-  posts.push({
-    id: new Date().getTime(),
-    title,
-    content,
-  });
+const createPost = (req, res, next) => {
+  try {
+    const { title, content } = req.body;
+    posts.push({
+      id: new Date().getTime(),
+      title,
+      content,
+    });
 
-  res.status(201).json({ posts });
+    res.status(201).json({ posts });
+  } catch (err) {
+    next(err);
+  }
 };
 
 router.get("/", getPosts);

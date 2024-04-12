@@ -4,8 +4,7 @@ import helmet from "helmet";
 import dayjs from "dayjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import controllers from "./controllers";
-import test from './controllers/posts/index';
+import Controllers from "./controllers";
 
 const app = express();
 
@@ -19,8 +18,14 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "700mb" }));
 
-controllers.forEach((controller) => {
+Controllers.forEach((controller) => {
   app.use(controller.path, controller.router);
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
+
+  res.status(err.status || 500).json({ message: err.message || "서버에서 에러가 발생하였습니다." });
 });
 
 // const today = new Date();
@@ -34,9 +39,9 @@ controllers.forEach((controller) => {
 // const token = jwt.sign("1234", "zxczxc");
 // console.log("token: ", token);
 
-// // GET Method
-// // 유저 정보가져오기
-// // 성공 status 200
+// GET Method
+// 유저 정보가져오기
+// 성공 status 200
 // app.get("/users", (req, res) => {
 //   res.status(200).json({ users });
 // });
