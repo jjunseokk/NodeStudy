@@ -92,6 +92,7 @@ app.use((err, req, res, next) => {
 
 // req : 요청 => Request
 // res : 응답 => Response
+
 app.get("/", (req, res) => {
   res.send("Express");
 });
